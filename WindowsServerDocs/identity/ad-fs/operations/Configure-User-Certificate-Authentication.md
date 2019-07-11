@@ -33,8 +33,13 @@ The intermediate certificates should be installed in the local computer intermed
 ## Configure Seamless Certificate Authentication for Chrome browser on Windows Desktops
 When multiple user certificates (such as Wi-Fi certificates) are present on the machine that satisfy the purposes of client authentication, the Chrome browser on Windows desktop will prompt the user to select the right certificate. This may be confusing to the end user. To optimize this experience, you can set a policy for Chrome to auto-select the right certificate for a better user experience. This policy can be set manually by making a registry change or configured automatically via GPO (to set the registry keys). This requires your user client certificates for authentication against AD FS to have distinct issuers from other use cases. 
 
-For more information on configuring this for Chrome, please refer to this [link](http://www.chromium.org/administrators/policy-list-3#AutoSelectCertificateForUrls).  
+- Registry change on ADFS to prompt for user smart card:
+In this registry setting change the DWORD from value 1 to 0. If the value is set to 1 it will automatically select the certificate for the user.  If value is set to 0 it prompts the user for certificates, allowing them to select their correct smart card certificate to be used for authentication.
+KEY: HKLM\system\currentcontrolset\control\securityproviders\schannel\sendtrustedissuerlist
+Type: DWORD (32 bit)
+Value: 0
 
+For more information on configuring this for Chrome, please refer to this [link](http://www.chromium.org/administrators/policy-list-3#AutoSelectCertificateForUrls).  
 
 ## Troubleshooting
 - If certificate authentication requests fail with an HTTP 204 "No Content from https:\//certauth.fs.contoso.com" response, verify that the root and any intermediate CA certificates are installed, respectively, to the trusted root CA and intermediate CA certificate stores on all federation servers.
